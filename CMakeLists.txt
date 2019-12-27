@@ -7,6 +7,7 @@ conan_basic_setup()
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+set(OPENSSL_ROOT_DIR /usr/local/opt/openssl\@1.1)
 
 find_package(Tcmalloc)
 find_package(Threads)
