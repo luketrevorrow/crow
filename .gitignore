@@ -38,4 +38,7 @@ crow_all.h
 build/
 
 .idea
+.vs
+CMakeSettings.json
+.vscode
 cmake-build-debug
