@@ -1,34 +1,58 @@
 language: cpp
-sudo: false
+dist: bionic
 cache: ccache
 notifications:
-  slack: altgroupworkspace:rGHfzPgHn04RD714IRPr1TF5
-    rooms:
-      secure: Z/VSYLJJzG/K4dyuaSh3jnLAaWytuKxamIpK58k5x9q85vpTKQBCayzmLigXLHECpao8L17FNLjcOoVwq5JAdWjN5bsfU+CrwcmBPF8AufEwLFTVCmYaE7tQ4TDWsHCEavnx0I2UH7Tv/EMS47uqtwS7M0J2/kWqlxwojlTHaX8OqFyehys1P8XZIMRLeLV3tWEI1YTQCH5WkCjynL1bEMiCMeI5nTJNPKcBb+I6bnJMVgTWOc8JM+k88HD+Bet2iRnKwGiDFswOhtgSC0zQtrqCh8RMDI+by/a1au73RfSbtarbF8xgUN0iFaNpU3v6Q3cYYLaJAdPl0CqCBEeAteYbfms/ouFHmYCuJUsNYBKb0PtHDAqIjhqnqkySAtS81JNwIi2u/5WTDtzaoQ0GrmO7T2DYgbWAjJ85Kk+n75EUC44L9EBybs6ZNI1E5gZAhlcxtVjXQaHUwtnNTzBBSDe+QtH+CAukXKhek0InrXafcOMJ/qr+sc5Yd85H9cjDrTtTQ/IJJ3dvs4Jv3eE3wBMGN+T5VJ+PXzYhrtwDuuZ1lxotS2KB0Vp2z92fbfxdOVozbFHqQ36U2BpzZbpBG0+HZfqEPTxFndLjYpWO6Kyp589h0jdHyzR6yHTAELpuC0NLTUaQuGgD1MHhQDUWuld7gVlQUKCKlPDqjnWxUmM=
-      on_success: always
-      on_failure: always
+  slack:
+    secure: UUU/k5i5bIkBkde2ZsEhX5KUNGDQJxea4vRe8F5f2zvLXxgW8ZyJw3tiKuNXm6tj0nUXAOnDBda8NLBtrMtHsYSWEzuzGe5MNblTjeExyhrM7S6ocpafE9xpMkk4E+XHOg/VFs4Z8LCqFi+kRAgqHBFY536yKpSsziP+sVkyIlu04VBFFoBqU2tuH/kVwUJ+KbnH9KR9o+O1m8i3FqnuYXBfaKa1QQ8chY9EXvFHUOQKZhd2poUp3qBF23HukMrRtcv8H/dwZZLugTkTqVwB2qup4GiJC5mTjDZXa9UAy4HdH2rUoxqqyzOPM/r18uWUEytr7nZnXGCwfDbx5OnnezN0sWRGh8Bq5bCvcR3OSSyLYhD6L0sZPezeTHA22jjl0BDJFUF3xSWMu61zKiAN3iA5HRa7oH8qturqZAyeF5Fv4HHR6GCMHJP26jwkCUkmrxQGurPAuvtgmKSJSNhkUQcYwLPJ+Z6cCVZRP3GiNUuZxXRmNMCj4dtIHW5eDuCwieyY8/zAGCkfl4Ea1bdzNlwRjhVheb/Ik7IHkZbAxqMH9Vp7bIRL0cJgsY5YNoq03OOnhCBSvzb1dTXzIILEpxEfWtjB0fu8mm6bLaJbpQ/MDko82rPEDy5dZ2/y1rkBiR3P9C3qO7YGnd1DoprX3DfIoG9OZxiAAbwqtUHbFM4=
 compiler:
 - gcc
-env:
-  matrix:
-  - COMPILER=g++-4.8 CCOMPILER=gcc-4.8 PUSH_COVERAGE=ON
-  - COMPILER=g++-4.9 CCOMPILER=gcc-4.9
-  - COMPILER=g++-5 CCOMPILER=gcc-5
-  - COMPILER=clang++-3.6 CCOMPILER=clang-3.6
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - boost-latest
-    - llvm-toolchain-precise
-    - llvm-toolchain-precise-3.6
-    packages:
-    - g++-4.8
-    - g++-4.9
-    - g++-5
-    - clang-3.6
-    - libboost-all-dev
-    - python-pip
+matrix:
+  include:
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-5', 'libboost-all-dev', python-pip]
+      env: TOOLSET=clang++ TOOLSET_C=clang BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-4.8', 'libboost-all-dev', python-pip]
+      env: TOOLSET=g++-4.8 TOOLSET_C=gcc-4.8 BUILD_TYPE='Debug'
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-4.8', 'libboost-all-dev', python-pip]
+      env: TOOLSET=g++-4.8 TOOLSET_C=gcc-4.8 BUILD_TYPE='Release'
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-5', 'libboost-all-dev', python-pip]
+      env: TOOLSET=g++-5 TOOLSET_C=gcc-5 BUILD_TYPE='Debug'
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'boost-latest']
+          packages: ['g++-5', 'libboost-all-dev', python-pip]
+      env: TOOLSET=g++-5 TOOLSET_C=gcc-5 BUILD_TYPE='Release'
+
+    - os: osx
+      compiler: clang
+      env: TOOLSET=clang++ TOOLSET_C=clang BUILD_TYPE='Debug'
+    - os: osx
+      compiler: clang
+      env: TOOLSET=clang++ TOOLSET_C=clang BUILD_TYPE='Release'
+
 install:
 - if [ "$PUSH_COVERAGE" == "ON" ]; then pip install --user git+git://github.com/eddyxu/cpp-coveralls.git;
   fi
